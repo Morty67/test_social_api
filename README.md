@@ -41,12 +41,13 @@ Domain:
 
 ## Run bot.py
 * python bot.py
-* 
+
+
 ## Run Docker 🐳
 Docker must be installed :
 * docker-compose up --build
 ## Run bot.py in Docker:
-* docker exec -it <container id> bash
+* docker exec -it container id bash
 * python bot.py
 ```shell
 

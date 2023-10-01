@@ -30,6 +30,8 @@ DB_PASS=YOUR DB_PASS
 JWT_SECRET_KEY=YOUR JWT_SECRET_KEY
 JWT_ALGORITHM in .env.sample
 
+BASE_URL=your url like http://127.0.0.1:8000/ 
+
 alembic upgrade head
 uvicorn app.main:app --reload
 

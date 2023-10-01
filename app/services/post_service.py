@@ -7,11 +7,35 @@ from app.serializers.post_serializer import PostCreate, PostResponse
 
 
 class PostService:
+    """
+    Service class for handling post-related operations including creation.
+
+    This class provides methods to create new posts, associating them with the specified user,
+    and updating the last request time for the user.
+
+    Attributes:
+        post_repo (PostRepository): An instance of PostRepository for database operations related to posts.
+        user_repo (UserRepository): An instance of UserRepository for user-related database operations.
+    """
+
     def __init__(self, post_repo: PostRepository, user_repo: UserRepository):
         self.post_repo = post_repo
         self.user_repo = user_repo
 
     async def create_post(self, post_data: PostCreate, user_id: int):
+        """
+        Creates a new post with the provided data and associates it with the specified user.
+
+        Args:
+            post_data (PostCreate): The data for creating the new post.
+            user_id (int): The ID of the user creating the post.
+
+        Returns:
+            PostResponse: An instance of PostResponse containing the details of the created post.
+
+        Raises:
+            HTTPException: If the user specified by user_id is not found.
+        """
         user = await self.post_repo.get_user_by_id(user_id)
 
         if not user:

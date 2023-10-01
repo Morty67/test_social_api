@@ -7,6 +7,18 @@ from app.repositories.user_repository import UserRepository
 
 
 class LikeService:
+    """
+    Service class for handling like-related operations including adding, removing, and analytics.
+
+    This class provides methods to add and remove likes on posts, as well as retrieving analytics
+    for likes within a specified date range.
+
+    Attributes:
+        like_repo (LikeRepository): An instance of LikeRepository for database operations related to likes.
+        user_repo (UserRepository): An instance of UserRepository for user-related database operations.
+        post_repo (PostRepository): An instance of PostRepository for post-related database operations.
+    """
+
     def __init__(
         self,
         like_repo: LikeRepository,
@@ -18,6 +30,19 @@ class LikeService:
         self.post_repo = post_repo
 
     async def add_like(self, user_id: int, post_id: int):
+        """
+        Adds a like to a post for the specified user.
+
+        Args:
+            user_id (int): The ID of the user adding the like.
+            post_id (int): The ID of the post to be liked.
+
+        Returns:
+            dict: A dictionary containing like details if successful.
+
+        Raises:
+            HTTPException: If the user or post does not exist.
+        """
         user = await self.user_repo.get_user_by_id(user_id)
         post = await self.post_repo.get_post_by_id(post_id)
 
@@ -40,6 +65,19 @@ class LikeService:
         return like
 
     async def remove_like(self, user_id: int, post_id: int):
+        """
+        Removes a like from a post for the specified user.
+
+        Args:
+            user_id (int): The ID of the user removing the like.
+            post_id (int): The ID of the post to be unliked.
+
+        Returns:
+            bool: True if the like is successfully removed.
+
+        Raises:
+            HTTPException: If the like does not exist.
+        """
         existing_like = await self.like_repo.get_like(user_id, post_id)
 
         if existing_like:
@@ -56,6 +94,19 @@ class LikeService:
             )
 
     async def get_likes_analytics(self, date_from: str, date_to: str):
+        """
+        Retrieves analytics data for likes within a specified date range.
+
+        Args:
+            date_from (str): The start date in the format 'YYYY-MM-DD'.
+            date_to (str): The end date in the format 'YYYY-MM-DD'.
+
+        Returns:
+            dict: A dictionary containing likes analytics data.
+
+        Raises:
+            HTTPException: If there are no likes within the specified date range.
+        """
         date_from = datetime.strptime(date_from, "%Y-%m-%d")
         date_to = datetime.strptime(date_to, "%Y-%m-%d")
 
